@@ -1,0 +1,76 @@
+---
+import Album from "../components/Album.astro";
+
+import albums from "../assets/albums.json";
+
+import YoutubeLogo from "../assets/Youtube_logo.svg";
+import Deezer from "../assets/Deezer-cb-rgb.svg";
+import AppleMusic from "../assets/apple-music-logo.svg";
+import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
+---
+
+<div class="discographie">
+  <h2 class="title">Discographie</h2>
+  <p class="links">
+    Disponible sur: <a
+      href="https://www.youtube.com/channel/UCB8pfJmaihB_bzN_tUTABkA"
+      target="_blank"
+      ><YoutubeLogo width={32} height={32} fill="currentColor" /></a
+    >
+    <a
+      href="https://open.spotify.com/artist/0zzdxn54ATNmLhm0GSBmJ0"
+      target="_blank"
+      ><SpotifyLogo width={32} height={32} fill="currentColor" /></a
+    >
+    <a href="https://link.deezer.com/s/31ivPiBTPHYSRqqMdMecA" target="_blank"
+      ><Deezer width={32} height={32} fill="currentColor" /></a
+    >
+    <a
+      href="https://music.apple.com/fr/artist/simon-colliez/1777855010"
+      target="_blank"
+      ><AppleMusic width={32} height={32} fill="currentColor" /></a
+    >
+  </p>
+  <ul class="albums">
+    {albums.map((album) => <Album album={album} />)}
+  </ul>
+</div>
+
+<style>
+  .discographie {
+    padding: 3rem;
+    background-color: rgb(250, 237, 216);
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-top: 0;
+  }
+
+  .albums {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+  }
+
+  .links {
+    margin-bottom: 2rem;
+  }
+
+  .links svg {
+    vertical-align: middle;
+    margin: 0 0.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .discographie {
+      padding: 2rem 1rem;
+    }
+  }
+</style>

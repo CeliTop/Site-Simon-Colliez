@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
+
+interface Album {
+  name: string;
+  year: string;
+  tracks: string[];
+  spotify: string;
+}
+
+interface Props {
+  album: Album;
+}
+
+const { album } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/albums/*.{jpeg,jpg,png,gif}"
+);
+
+// Construct the expected full path key
+const imagePath = `/src/assets/albums/${album.name}.jpg`;
+
+if (!images[imagePath]) {
+  throw new Error(
+    `"${imagePath}" does not exist in glob: "src/assets/albums/*.{jpeg,jpg,png,gif}"`
+  );
+}
+---
+
+<li class="album-wrapper">
+  <div class="album">
+    <Image
+      src={images[imagePath]()}
+      alt={album.name}
+      width="300"
+      height="300"
+    />
+    <div class="album-details">
+      <p class="title">
+        <strong>{album.name}</strong> - {album.year}
+        <a href={album.spotify} target="_blank"
+          ><SpotifyLogo width={16} height={16} fill="currentColor" /></a
+        >
+      </p>
+      <ol>
+        {album.tracks.map((track) => <li>{track}</li>)}
+      </ol>
+    </div>
+  </div>
+</li>
+
+<style>
+  .album {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    width: min(700px, 80vw);
+  }
+
+  img {
+    max-width: 40%;
+    height: auto;
+  }
+
+  .album-details {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .album {
+      flex-direction: column;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .album-details {
+      width: 100%;
+    }
+  }
+</style>

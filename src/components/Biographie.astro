@@ -1,0 +1,103 @@
+---
+import { Image } from "astro:assets";
+import SIMON from "../assets/SIMON.png";
+import SimonLogo from "../assets/simon-rouge.png";
+
+import backgroundImage from "../assets/auchel_terril.jpg";
+---
+
+<div
+  id="biographie"
+  style={`background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${backgroundImage.src})`}
+>
+  <Image src={SIMON} alt="Simon Colliez pris en photo" />
+  <div class="bio-right">
+    <Image src={SimonLogo} alt="Simon Colliez Titre" class="titre" />
+    <div class="bio">
+      Né en 1948 à La Beuvrière, dans le Pas-de-Calais, Simon Colliez est un
+      chanteur emblématique de la culture ch’ti. Depuis plus de cinquante ans,
+      il célèbre avec humour et tendresse la vie du Nord à travers ses chansons.<br
+      />
+      Auteur de titres devenus cultes comme Chest toutis des frites, Louis par chi
+      Louis par là ou Sin ptit frère, il a su mêler langue picarde, accordéon et
+      chanson française pour créer un style unique, chaleureux et populaire.<br
+      />
+      Profondément attaché à ses racines, Simon Colliez raconte dans ses textes la
+      simplicité, la fraternité et la fierté des gens du Nord. Sa musique, à la fois
+      drôle, nostalgique et sincère, continue de rassembler un public fidèle et de
+      transmettre l’âme d’une région qu’il aime profondément.<br />
+    </div>
+    <div
+      class="contact-ref"
+      onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+    >
+      Me contacter
+    </div>
+  </div>
+</div>
+
+<style>
+  #biographie {
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+    padding: 12rem 8rem;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: white;
+  }
+
+  @media (max-width: 1200px) {
+    #biographie {
+      flex-direction: column;
+      padding: 0 0 4rem 0;
+      gap: 2rem;
+    }
+
+    .bio-right {
+      max-width: 80%;
+    }
+  }
+
+  .titre {
+    width: min(600px, 100%);
+    margin-bottom: 2rem;
+  }
+
+  br {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .bio {
+    font-size: 1.125rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .contact-ref {
+    background: white;
+    color: black;
+    padding: 1rem 2rem;
+    width: fit-content;
+    cursor: pointer;
+    margin-top: 1rem;
+    border-radius: 5px;
+    transition: 200ms;
+    border: solid 1px white;
+  }
+
+  .contact-ref:hover {
+    background-color: black;
+    color: white;
+  }
+</style>

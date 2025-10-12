@@ -1,0 +1,39 @@
+---
+import "@fontsource-variable/merriweather";
+import font from "@fontsource-variable/merriweather/files/merriweather-latin-wght-normal.woff2";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={font}
+      crossorigin="anonymous"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>Simon Colliez</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Merriweather Variable", serif;
+  }
+
+  p {
+    margin: 0;
+  }
+</style>
