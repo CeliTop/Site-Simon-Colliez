@@ -1,50 +1,85 @@
 ---
-
+import Mail from "../assets/mail.svg";
+import Phone from "../assets/phone.svg";
+import MapPin from "../assets/map-pin.svg";
 ---
 
-<div id="contact">
-  <h3>Me contacter</h3>
-  <div class="address">
-    <p>Adresse:</p>
-    <p>10 bis rue Eugène Engrand</p>
-    <p>62260 Caucy à la Tour</p>
-  </div>
+<section id="contact">
+  <div class="contact-card">
+    <h3>Coordonnées</h3>
 
-  <div class="phone">
-    <p>Téléphone:</p>
-    <p>0321651020</p>
-  </div>
+    <div class="contact-item">
+      <MapPin />
+      <div>
+        <p class="label">Adresse</p>
+        <p>10 bis rue Eugène Engrand<br />62260 Cauchy à la Tour</p>
+      </div>
+    </div>
 
-  <div class="mail">
-    <a href="mailto:simon.colliez@wanadoo.fr">simon.colliez@wanadoo.fr</a>
+    <div class="contact-item">
+      <Phone />
+      <div>
+        <p class="label">Téléphone</p>
+        <a href="tel:0321651020" class="contact-link">03 21 65 10 20</a>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <Mail />
+      <div>
+        <p class="label">Email</p>
+        <a href="mailto:simon.colliez@wanadoo.fr" class="contact-link"
+          >simon.colliez@wanadoo.fr</a
+        >
+      </div>
+    </div>
+
+    <div>
+      <p>Pour obtenir des partitions, n’hésitez pas à envoyer un email</p>
+    </div>
   </div>
-</div>
+</section>
 
 <style>
   #contact {
-    background-color: #2c2e7c;
-    color: white;
-    padding: 1rem 8%;
-    font-size: 1.125rem;
+    padding: 3rem 1rem;
+    display: flex;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .contact-card {
+    background: white;
+    color: #2c2e7c;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 2rem;
+    max-width: 700px;
+    width: 100%;
   }
 
   h3 {
-    font-size: 1.75rem;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
-  #contact > * {
-    margin: 2rem 0;
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
   }
 
-  .mail {
-    background-color: white;
-    width: fit-content;
-    margin-top: 2rem;
+  .label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
   }
 
-  .mail a {
+  .contact-link {
     color: #2c2e7c;
-    padding: 1rem;
-    display: block;
+    text-decoration: none;
+  }
+
+  .contact-link:hover {
+    text-decoration: underline;
   }
 </style>

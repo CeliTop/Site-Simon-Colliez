@@ -4,7 +4,7 @@ import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
 
 interface Album {
   name: string;
-  year: string;
+  year: number;
   tracks: string[];
   spotify: string;
 }
@@ -40,7 +40,10 @@ if (!images[imagePath]) {
     <div class="album-details">
       <p class="title">
         <strong>{album.name}</strong> - {album.year}
-        <a href={album.spotify} target="_blank"
+        <a
+          href={album.spotify}
+          target="_blank"
+          aria-label={`Écouter ${album.name} sur Spotify`}
           ><SpotifyLogo width={16} height={16} fill="currentColor" /></a
         >
       </p>

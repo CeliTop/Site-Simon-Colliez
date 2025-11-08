@@ -7,6 +7,8 @@ import YoutubeLogo from "../assets/Youtube_logo.svg";
 import Deezer from "../assets/Deezer-cb-rgb.svg";
 import AppleMusic from "../assets/apple-music-logo.svg";
 import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
+
+albums.sort((a, b) => b.year - a.year);
 ---
 
 <div class="discographie">
@@ -14,32 +16,64 @@ import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
   <p class="links">
     Disponible sur: <a
       href="https://www.youtube.com/channel/UCB8pfJmaihB_bzN_tUTABkA"
+      aria-label="Écouter Simon Colliez sur Youtube"
       target="_blank"
       ><YoutubeLogo width={32} height={32} fill="currentColor" /></a
     >
     <a
       href="https://open.spotify.com/artist/0zzdxn54ATNmLhm0GSBmJ0"
+      aria-label="Écouter Simon Colliez sur Spotify"
       target="_blank"
       ><SpotifyLogo width={32} height={32} fill="currentColor" /></a
     >
-    <a href="https://link.deezer.com/s/31ivPiBTPHYSRqqMdMecA" target="_blank"
-      ><Deezer width={32} height={32} fill="currentColor" /></a
+    <a
+      href="https://link.deezer.com/s/31ivPiBTPHYSRqqMdMecA"
+      aria-label="Écouter Simon Colliez sur Deezer"
+      target="_blank"><Deezer width={32} height={32} fill="currentColor" /></a
     >
     <a
       href="https://music.apple.com/fr/artist/simon-colliez/1777855010"
+      aria-label="Écouter Simon Colliez sur Apple Music"
       target="_blank"
       ><AppleMusic width={32} height={32} fill="currentColor" /></a
     >
   </p>
-  <ul class="albums">
+  <input
+    type="text"
+    id="albumSearch"
+    placeholder="Rechercher un album / titre"
+  />
+
+  <ul class="albums" id="albumsList">
     {albums.map((album) => <Album album={album} />)}
   </ul>
 </div>
 
+<script defer>
+  // Sélection du champ et de la liste
+  const searchInput = document.getElementById("albumSearch");
+  const albumsList = document.getElementById("albumsList");
+  const albumItems = Array.from(albumsList.children);
+
+  searchInput.addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase();
+
+    albumItems.forEach((item) => {
+      const title = item.querySelector(".title").textContent.toLowerCase();
+      const tracks = Array.from(item.querySelectorAll("ol li")).map((li) =>
+        li.textContent.toLowerCase()
+      );
+      const match =
+        title.includes(query) || tracks.some((track) => track.includes(query));
+
+      item.style.display = match ? "" : "none";
+    });
+  });
+</script>
+
 <style>
   .discographie {
     padding: 3rem;
-    background-color: rgb(250, 237, 216);
   }
 
   .title {
@@ -72,5 +106,13 @@ import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
     .discographie {
       padding: 2rem 1rem;
     }
+  }
+
+  #albumSearch {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
   }
 </style>
