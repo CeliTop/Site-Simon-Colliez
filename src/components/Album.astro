@@ -1,11 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import SpotifyLogo from "../assets/Spotify_Logo_Green_RGB.svg";
+import { slugify } from "../utils/slugify";
 
 interface Album {
   name: string;
   year: number;
   tracks: string[];
+  lyrics: string[];
   spotify: string;
 }
 
@@ -16,7 +18,7 @@ interface Props {
 const { album } = Astro.props;
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/albums/*.{jpeg,jpg,png,gif}"
+  "/src/assets/albums/*.{jpeg,jpg,png,gif}",
 );
 
 // Construct the expected full path key
@@ -24,9 +26,11 @@ const imagePath = `/src/assets/albums/${album.name}.jpg`;
 
 if (!images[imagePath]) {
   throw new Error(
-    `"${imagePath}" does not exist in glob: "src/assets/albums/*.{jpeg,jpg,png,gif}"`
+    `"${imagePath}" does not exist in glob: "src/assets/albums/*.{jpeg,jpg,png,gif}"`,
   );
 }
+
+const albumSlug = slugify(album.name);
 ---
 
 <li class="album-wrapper">
@@ -48,7 +52,16 @@ if (!images[imagePath]) {
         >
       </p>
       <ol>
-        {album.tracks.map((track) => <li>{track}</li>)}
+        {
+          album.tracks.map((track) => {
+            const songSlug = slugify(track);
+            return (
+              <li>
+                <a href={`/paroles/${albumSlug}/${songSlug}`}>{track}</a>
+              </li>
+            );
+          })
+        }
       </ol>
     </div>
   </div>
@@ -70,6 +83,15 @@ if (!images[imagePath]) {
 
   .album-details {
     width: 100%;
+  }
+
+  .album-details ol a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .album-details ol a:hover {
+    text-decoration: underline;
   }
 
   .title {

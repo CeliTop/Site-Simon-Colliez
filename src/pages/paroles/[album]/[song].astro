@@ -1,0 +1,313 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../../layouts/Layout.astro";
+import albums from "../../../assets/albums.json";
+import { slugify } from "../../../utils/slugify";
+
+// génération des chemins à la compilation
+export function getStaticPaths() {
+  const paths: {
+    params: { album: string; song: string };
+    props: {
+      track: string;
+      lyrics: string;
+      album: {
+        name: string;
+        year: number;
+        tracks: string[];
+        spotify: string;
+        lyrics: string[];
+      };
+    };
+  }[] = [];
+
+  for (const album of albums) {
+    const albumSlug = slugify(album.name);
+
+    album.tracks.forEach((track, i) => {
+      paths.push({
+        params: {
+          album: albumSlug,
+          song: slugify(track),
+        },
+        props: {
+          track,
+          lyrics: album.lyrics[i],
+          album,
+        },
+      });
+    });
+  }
+
+  return paths;
+}
+
+const { track, lyrics, album } = Astro.props;
+
+// récupération pochette album
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/albums/*.{jpeg,jpg,png,gif}",
+);
+
+const imagePath = `/src/assets/albums/${album.name}.jpg`;
+
+if (!images[imagePath]) {
+  throw new Error(
+    `"${imagePath}" does not exist in glob: "src/assets/albums/*.{jpeg,jpg,png,gif}"`,
+  );
+}
+
+const albumSlug = slugify(album.name);
+
+// récupérer chansons précedents et suivantes
+const trackIndex = album.tracks.indexOf(track);
+
+const prevTrack =
+  trackIndex > 0
+    ? {
+        name: album.tracks[trackIndex - 1],
+        slug: slugify(album.tracks[trackIndex - 1]),
+      }
+    : null;
+
+const nextTrack =
+  trackIndex < album.tracks.length - 1
+    ? {
+        name: album.tracks[trackIndex + 1],
+        slug: slugify(album.tracks[trackIndex + 1]),
+      }
+    : null;
+---
+
+<Layout>
+  <main class="lyrics-page">
+    <!-- Colonne gauche avec album, liste chansons -->
+    <div class="song-info">
+      <a href="/#discographie" class="back-button">← Retour à la discographie</a
+      >
+
+      <h1>{track}</h1>
+
+      <p class="album">
+        <strong>{album.name}</strong> ({album.year})
+      </p>
+
+      <Image
+        src={images[imagePath]()}
+        alt={`Pochette de l'album ${album.name}`}
+        width="300"
+        height="300"
+        class="cover"
+      />
+
+      <nav class="album-tracks">
+        <h2>Chansons de l’album</h2>
+        <ul>
+          {
+            album.tracks.map((t) => {
+              const songSlug = slugify(t);
+              const isActive = t === track;
+              return (
+                <li>
+                  <a
+                    href={`/paroles/${albumSlug}/${songSlug}`}
+                    class={isActive ? "active" : ""}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {t}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Colonne droite avec paroles et navigation -->
+    <div>
+      <pre class="lyrics">{lyrics}</pre>
+
+      <div class="song-nav">
+        {
+          prevTrack && (
+            <a
+              href={`/paroles/${albumSlug}/${prevTrack.slug}`}
+              class="nav prev"
+            >
+              ← {prevTrack.name}
+            </a>
+          )
+        }
+
+        {
+          nextTrack && (
+            <a
+              href={`/paroles/${albumSlug}/${nextTrack.slug}`}
+              class="nav next"
+            >
+              {nextTrack.name} →
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .lyrics-page {
+    max-width: 1400px;
+    margin: auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+  }
+
+  .song-info {
+    max-width: 320px;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .cover {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .back-button {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s;
+  }
+
+  .back-button:hover {
+    opacity: 1;
+  }
+
+  .album-tracks {
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .album-tracks h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.2rem;
+  }
+
+  .album-tracks ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .album-tracks li {
+    margin-bottom: 0.4rem;
+  }
+
+  .album-tracks a {
+    text-decoration: none;
+    color: #007acc;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .album-tracks a:hover {
+    color: #004a99;
+    text-decoration: underline;
+  }
+
+  .album-tracks a.active,
+  .album-tracks a[aria-current="page"] {
+    font-weight: 700;
+    color: #222;
+    text-decoration: underline;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .lyrics {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    max-width: 65ch;
+    text-align: left;
+  }
+
+  .song-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+
+  .song-nav a {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .song-nav a:hover {
+    opacity: 1;
+  }
+
+  /* Responsive mobile */
+  @media (max-width: 1000px) {
+    .lyrics-page {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .album-tracks {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .album-tracks ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      margin: 0 auto;
+    }
+
+    .album-tracks li {
+      margin: 0;
+    }
+
+    .album-tracks a {
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background-color: #007acc22;
+      color: #007acc;
+    }
+
+    .album-tracks a:hover {
+      background-color: #007acc44;
+      text-decoration: none;
+    }
+
+    .album-tracks a.active,
+    .album-tracks a[aria-current="page"] {
+      background: none;
+      color: #222;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .lyrics {
+      max-width: 100%;
+      text-align: center;
+    }
+  }
+</style>
