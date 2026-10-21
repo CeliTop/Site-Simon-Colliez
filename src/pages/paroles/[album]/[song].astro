@@ -125,8 +125,8 @@ const nextTrack =
     </div>
 
     <!-- Colonne droite avec paroles et navigation -->
-    <div>
-      <pre class="lyrics">{lyrics}</pre>
+    <div class="lyrics-wrap">
+      <div class="lyrics">{lyrics}</div>
 
       <div class="song-nav">
         {
@@ -231,6 +231,10 @@ const nextTrack =
     text-decoration: underline;
     cursor: default;
     pointer-events: none;
+  }
+
+  .lyrics-wrap {
+    min-width: 40ch;
   }
 
   .lyrics {
