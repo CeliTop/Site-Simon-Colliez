@@ -4,7 +4,7 @@ import font from "@fontsource-variable/merriweather/files/merriweather-latin-wgh
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -22,6 +22,31 @@ import font from "@fontsource-variable/merriweather/files/merriweather-latin-wgh
       content="Site officiel de Simon Colliez, musicien et auteur. Découvrez sa musique, ses albums et morceaux, et entrez en contact."
     />
     <title>Simon Colliez</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://simoncolliez.fr/#simon-colliez",
+  "name": "Simon Colliez",
+  "url": "https://simoncolliez.fr/",
+  "description": "Simon Colliez, chanteur ch'ti, auteur et interprète.",
+  "jobTitle": [
+    "Chanteur",
+    "Auteur",
+    "Interprète"
+  ],
+  "mainEntityOfPage": "https://simoncolliez.fr/",
+  "sameAs": [
+    "https://pcd.wikipedia.org/wiki/Simon_Colliez",
+    "https://www.wikidata.org/wiki/Q16944609", 
+    "https://music.youtube.com/@SimonColliez",
+    "https://www.youtube.com/channel/UC7EoLLo5infa6XBYDxxCoow",
+    "https://open.spotify.com/artist/0zzdxn54ATNmLhm0GSBmJ0",
+    "https://open.spotify.com/artist/6gE4DZDwzhaa3Jj9XilB8X",
+    "https://music.apple.com/fr/artist/simon-colliez/1777855010",
+    "https://music.amazon.fr/artists/B0025SQRCK/simon-colliez",
+    "https://www.deezer.com/fr/artist/4644188"
+  ]
+})} />
   </head>
   <body>
     <slot />
